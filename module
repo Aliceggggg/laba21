@@ -1,0 +1,85 @@
+#include "bin5.h"
+
+// Печатать дерево красиво
+void printTree(Node* root, int space, const int COUNT) {
+    if (root == nullptr)
+        return;
+
+    space += COUNT;
+    printTree(root->right, space, COUNT);
+
+    cout << "\n";
+    for (int i = COUNT; i < space; i++)
+        cout << " ";
+    cout << root->data << "\n";
+
+    printTree(root->left, space, COUNT);
+}
+
+//Проверка ввода
+bool check(string n) {
+    int flag = 0;
+    for (char s : n) {
+        if (isdigit(s)) {
+            flag ++;
+        }
+    }
+    if (n.length() == flag) return true;
+    else return false;
+}
+
+// Вставка узла
+Node* insertNode(Node* root, int value) {
+    if (root == nullptr) {
+        return new Node(value);
+    }
+    if (value < root->data)
+        root->left = insertNode(root->left, value);
+    else
+        root->right = insertNode(root->right, value);
+    return root;
+}
+
+//Преобразование в список 
+void convert(Node* root, Node*& prev, Node*& head) {
+    if (root == nullptr)
+        return;
+    convert(root->left, prev, head);
+    if (prev == nullptr) {
+        head = root;
+    }
+    else {
+        root->left = prev;
+        prev->right = root;
+    }
+    prev = root;
+    convert(root->right, prev, head);
+}
+
+//Печать списка
+void printList(Node* head) {
+    cout << "Двусвязный список: ";
+    Node* current = head;
+    while (current != nullptr) {
+        cout << current->data << " ";
+        current = current->right;
+    }
+    cout << endl;
+}
+
+// обход ПЛК 
+void reverseInOrder(Node* root, std::unordered_set<Node*>& visited) {
+    if (root == nullptr || visited.count(root)) {
+        return;
+    }
+    visited.insert(root);
+
+    reverseInOrder(root->right, visited);
+    reverseInOrder(root->left, visited);
+    cout << root->data << " ";
+}
+
+void reverseInOrder(Node* root) {
+    unordered_set<Node*> visited;
+    reverseInOrder(root, visited);
+}
