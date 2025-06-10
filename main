@@ -1,0 +1,53 @@
+#include "bin5.h"
+#include <iostream>
+#include <string>
+#include <windows.h>
+
+using namespace std;
+
+int main() {
+    SetConsoleOutputCP(CP_UTF8);
+    setlocale(LC_ALL, "Russian");
+    Node* root = nullptr;
+    string n1, value1;
+    int n, value;
+    cout << "Введите количество элементов дерева: ";
+    cin >> n1;
+    while (!(check(n1))) {
+        n1.clear();
+        cout << "Попалась! Попробуйте снова: ";
+        cin >> n1;
+    }
+    n = stoi(n1);
+
+
+    cout << "Введите элементы дерева:" << endl;
+    for (int i = 0; i < n; i++) {
+        cin >> value1;
+        while (!(check(value1))) {
+            value1.clear();
+            cout << "Попалась! Попробуйте снова: ";
+            cin >> value1;
+        }
+        value = stoi(value1);
+        root = insertNode(root, value);
+    }
+
+    cout << "\nИсходное бинарное дерево поиска:\n";
+    printTree(root);
+
+    Node* P1 = nullptr;
+    Node* prev = nullptr;
+    convert(root, prev, P1);
+
+
+    cout << "\nВывод ПЛК:\n";
+    reverseInOrder(P1);
+
+}
+
+//TreeWork1.Дано бинарное дерево и указатель корень дерева P1.Необходимо вывести
+//содержимое информационных полей дерева, используя концевой обход(снизу - вверх).Сначала
+//выводится левое поддерево, потом правое поддерево, потом значение информационного поля
+//текущей вершины.При выводе левого и правого поддерева так же используется концевой
+//обход.
